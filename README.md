@@ -9,5 +9,5 @@ It does not even use SystemJS as there is now a native [Meteor loader for Aureli
 
 ```bash
 $ meteor remove blaze-html-templates spacebars
-$ meteor add sdenis:static-raw-html
+$ meteor add [sdenis:static-raw-html](https://atmospherejs.com/sdenis/static-raw-html)
 ```
