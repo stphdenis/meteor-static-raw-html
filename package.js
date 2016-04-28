@@ -33,6 +33,7 @@ Package.registerBuildPlugin({
     'ecmascript@0.1.6',
     'caching-compiler@1.0.0',
     'html-tools@1.0.5',
+    'underscore@1.0.4',
   ],
   sources: [
     'plugin/html-compiler.js',
