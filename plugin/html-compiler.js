@@ -1,14 +1,5 @@
 const minify = Npm.require('html-minifier').minify;
 const crc = Npm.require('crc');
-// const debug = Npm.require('debug')('ts:debug:');
-
-Plugin.registerCompiler({
-  extensions: ['html', 'au.html'],
-  archMatching: 'web',
-  isTemplate: true,
-  filenames: [],
-}, () => new HTMLCompiler()
-);
 
 class HTMLCompiler extends CachingCompiler {
   constructor() {
@@ -34,20 +25,23 @@ class HTMLCompiler extends CachingCompiler {
       return undefined;
     }
     let moduleName = fileName.replace(/(\.au)?\.html$/, '').replace(/\\/g, '/');
-    moduleName = packageName ? packageName + '/' + moduleName : moduleName;
-    const src = inputFile.getContentsAsString()
-    // Just parse the html to make sure it is correct before minifying
+    moduleName = packageName ? `${packageName}/${moduleName}` : moduleName;
+    const src = inputFile.getContentsAsString();
+    // Parse the html to make sure it is correct before minifying
+    // and to extract the modules'name from <require> tags.
+    let fragment;
     try {
-      HTMLTools.parseFragment(src)
+      fragment = HTMLTools.parseFragment(src);
     } catch (err) {
       return inputFile.error({
-        message: "HTML syntax error: " + err.message,
+        message: `HTML syntax error: ${err.message}`,
         sourcePath: inputFile.getPathInPackage(),
       });
     }
+    const requiredModules = this.extractRequiredModules(fragment);
     return {
-      code: this.buildTemplate(src, moduleName),
-      path: fileName + '.js',
+      code: this.buildTemplate(src, moduleName, requiredModules),
+      path: `${fileName}`,
     };
   }
 
@@ -60,8 +54,29 @@ class HTMLCompiler extends CachingCompiler {
     });
   }
 
-  buildTemplate(src, moduleName) {
-    return `module.exports = "${this.clean(src)}";`;
+  extractRequiredModules(fragment) {
+    const results = [];
+    const process = children => {
+      children.forEach(child => {
+        if (child.tagName && child.tagName === 'require') {
+          results.push(child.attrs.from);
+        }
+        if (Array.isArray(child.children)) {
+          process(child.children);
+        }
+      });
+    };
+    process(fragment);
+    return results;
+  }
+
+  buildTemplate(src, moduleName, requiredModules) {
+    let requires = requiredModules.reduce((res, x) => `${res}  require("${x}");\n`, '');
+    // Meteor have just to bundle the modules but does not have to load them at this time
+    if (requires.length) {
+      requires = `if(false) {\n${requires}}\n`;
+    }
+    return `${requires}module.exports = "${this.clean(src)}";`;
   }
 
   clean(src) {
@@ -70,16 +85,26 @@ class HTMLCompiler extends CachingCompiler {
       removeComments: true,
     })
     .replace(/(["\\])/g, '\\$1')
-    .replace(/[\f]/g, "\\f")
-    .replace(/[\b]/g, "\\b")
-    .replace(/[\n]/g, "\\n")
-    .replace(/[\t]/g, "\\t")
-    .replace(/[\r]/g, "\\r")
-    .replace(/[\u2028]/g, "\\u2028")
-    .replace(/[\u2029]/g, "\\u2029");
+    .replace(/[\f]/g, '\\f')
+    .replace(/[\b]/g, '\\b')
+    .replace(/[\n]/g, '\\n')
+    .replace(/[\t]/g, '\\t')
+    .replace(/[\r]/g, '\\r')
+    .replace(/[\u2028]/g, '\\u2028')
+    .replace(/[\u2029]/g, '\\u2029');
 
     return result;
   }
 }
+
+Plugin.registerCompiler(
+  {
+    extensions: ['html', 'au.html'],
+    archMatching: 'web',
+    isTemplate: true,
+    filenames: [],
+  },
+  () => new HTMLCompiler()
+);
 
 HTMLCompiler.systemjsDefined = false;

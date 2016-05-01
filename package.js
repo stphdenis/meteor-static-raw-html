@@ -1,12 +1,12 @@
 Package.describe({
   name: 'sdenis:static-raw-html',
-  version: '1.0.2',
+  version: '1.0.4',
   summary: 'It is similar to static-html but get\'s the html and jade files with <template> too.',
   git: 'http://github.com/stphdenis/meteor-static-raw-html.git',
   documentation: 'README.md',
 });
 
-Package.onUse(function(api) {
+Package.onUse(function onUse(api) {
   api.versionsFrom('1.3');
   api.use('isobuild:compiler-plugin@1.0.0');
   api.use('ecmascript@0.1.6');
@@ -58,7 +58,7 @@ Package.registerBuildPlugin({
   },
 });
 
-Package.onTest(function(api) {
+Package.onTest(function onTest(api) {
   api.use('tinytest');
   api.use('ecmascript');
   api.use('sdenis:static-raw-html');
