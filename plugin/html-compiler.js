@@ -59,7 +59,15 @@ class HTMLCompiler extends CachingCompiler {
     const process = children => {
       children.forEach(child => {
         if (child.tagName && child.tagName === 'require') {
-          results.push(child.attrs.from);
+          const fromAttr = child.attrs.from;
+          if (fromAttr.startsWith('.')) {
+            results.push(child.attrs.from);
+          } else {
+            // We just need the module name
+            // For example, we don't need 'aurelia-template-ressource/if'
+            //   but just 'aurelia-template-ressource'
+            results.push(child.attrs.from.split('/')[0]);
+          }
         }
         if (Array.isArray(child.children)) {
           process(child.children);

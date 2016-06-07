@@ -1,6 +1,6 @@
 Package.describe({
   name: 'sdenis:static-raw-html',
-  version: '1.0.5',
+  version: '1.0.6',
   summary: 'It is similar to static-html but get\'s the html and jade files with <template> too.',
   git: 'http://github.com/stphdenis/meteor-static-raw-html.git',
   documentation: 'README.md',
@@ -9,16 +9,16 @@ Package.describe({
 Package.onUse(function onUse(api) {
   api.versionsFrom('1.3');
   api.use('isobuild:compiler-plugin@1.0.0');
-  api.use('ecmascript@0.1.6');
+  api.use('ecmascript@0.4.3');
 });
 
 Package.registerBuildPlugin({
   name: 'index_compiler',
   use: [
-    'caching-html-compiler@1.0.2',
-    'ecmascript@0.1.6',
-    'templating-tools@1.0.0',
-    'underscore@1.0.4',
+    'caching-html-compiler@1.0.6',
+    'ecmascript@0.4.3',
+    'templating-tools@1.0.4',
+    'underscore@1.0.8',
   ],
   sources: [
     'plugin/index-handle/html-compiler.js',
@@ -30,15 +30,15 @@ Package.registerBuildPlugin({
 Package.registerBuildPlugin({
   name: 'html_compiler',
   use: [
-    'ecmascript@0.1.6',
-    'caching-compiler@1.0.0',
-    'html-tools@1.0.5',
+    'ecmascript@0.4.3',
+    'caching-compiler@1.0.4',
+    'html-tools@1.0.9',
   ],
   sources: [
     'plugin/html-compiler.js',
   ],
   npmDependencies: {
-    'html-minifier': '1.0.0',
+    'html-minifier': '2.1.3',
     crc: '3.4.0',
   },
 });
@@ -46,8 +46,8 @@ Package.registerBuildPlugin({
 Package.registerBuildPlugin({
   name: 'jade_compiler',
   use: [
-    'ecmascript@0.1.6',
-    'caching-compiler@1.0.0',
+    'ecmascript@0.4.3',
+    'caching-compiler@1.0.4',
   ],
   sources: [
     'plugin/jade-compiler.js',
