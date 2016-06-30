@@ -57,6 +57,9 @@ class HTMLCompiler extends CachingCompiler {
   extractRequiredModules(fragment) {
     const results = [];
     const process = children => {
+			if (children === null || typeof children === 'undefined'){
+				return;
+			}
       children.forEach(child => {
         if (child.tagName && child.tagName === 'require') {
           const fromAttr = child.attrs.from;
