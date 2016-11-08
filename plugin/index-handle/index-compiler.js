@@ -10,9 +10,10 @@ Plugin.registerCompiler({
 function compileTagsToStaticHtml(tags) {
   var handler = new StaticHtmlTagHandler();
 
-  tags.forEach((tag) => {
-    handler.addTagToResults(tag);
-  });
+  const nbrTags = tags.length;
+  for(let iTags = 0; iTag < nbrTags;) {
+    handler.addTagToResults(tags[iTags++]);
+  }
 
   return handler.getResults();
 };

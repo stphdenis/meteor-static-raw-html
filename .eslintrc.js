@@ -3,11 +3,6 @@
 module.exports = {
   "extends": [
     "airbnb/base", // sans react -> "airbnb/base", avec react -> "airbnb"
-    "plugin:meteor/recommended",
-  ],
-  "plugins": [
-      "meteor",
-      "html",
   ],
   "settings": {
     "html/report-bad-indent": 2,

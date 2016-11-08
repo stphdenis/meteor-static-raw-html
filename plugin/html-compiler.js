@@ -60,7 +60,9 @@ class HTMLCompiler extends CachingCompiler {
       if (children === null || typeof children === 'undefined'){
         return;
       }
-      children.forEach(child => {
+      const nbrChildren = children.length;
+      for(let iChild = 0; iChild < nbrChildren;) {
+        const child = children[iChild++];
         if (child.tagName && child.tagName === 'require') {
           const fromAttr = child.attrs.from;
           if (fromAttr.startsWith('.')) {
@@ -75,7 +77,7 @@ class HTMLCompiler extends CachingCompiler {
         if (Array.isArray(child.children)) {
           process(child.children);
         }
-      });
+      }
     };
     process(fragment);
     return results;
