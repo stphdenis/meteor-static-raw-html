@@ -11,7 +11,8 @@ function compileTagsToStaticHtml(tags) {
   var handler = new StaticHtmlTagHandler();
 
   const nbrTags = tags.length;
-  for(let iTags = 0; iTag < nbrTags;) {
+  let iTags = 0;
+  while(iTag < nbrTags) {
     handler.addTagToResults(tags[iTags++]);
   }
 

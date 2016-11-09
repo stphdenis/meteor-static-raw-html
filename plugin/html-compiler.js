@@ -61,7 +61,8 @@ class HTMLCompiler extends CachingCompiler {
         return;
       }
       const nbrChildren = children.length;
-      for(let iChild = 0; iChild < nbrChildren;) {
+      let iChild = 0;
+      while(iChild < nbrChildren) {
         const child = children[iChild++];
         if (child.tagName && child.tagName === 'require') {
           const fromAttr = child.attrs.from;

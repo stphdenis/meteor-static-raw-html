@@ -1,6 +1,7 @@
-// npm install -g eslint eslint-config-airbnb eslint-plugin-react eslint-plugin-meteor eslint-plugin-html
+// npm install -g eslint eslint-config-airbnb eslint-plugin-react eslint-plugin-meteor eslint-plugin-html eslint-plugin-import eslint-plugin-jsx-a11y
 // npm install -g eslint eslint-config-airbnb eslint-plugin-meteor eslint-plugin-html
 module.exports = {
+  "ecmaVersion": 6,
   "extends": [
     "airbnb/base", // sans react -> "airbnb/base", avec react -> "airbnb"
   ],
