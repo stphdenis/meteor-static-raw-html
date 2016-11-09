@@ -1,6 +1,6 @@
 Package.describe({
   name: 'sdenis:static-raw-html',
-  version: '1.0.8',
+  version: '1.0.9',
   summary: 'It is similar to static-html but get\'s the html and jade files with <template> too.',
   git: 'http://github.com/stphdenis/meteor-static-raw-html.git',
   documentation: 'README.md',
